@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Deadline Management</title>
+    <link href="styles.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+
+<!-- Sidebar and Main Content -->
+<div class="d-flex">
+  <div id="sidebar" class="bg-dark text-white p-3">
+    <h3>Features</h3>
+    <ul class="nav flex-column">
+        <li class="nav-item">
+            <a class="nav-link text-white" href="index.html">Home</a>
+          </li>
+      <li class="nav-item">
+        <a class="nav-link text-white" href="create-task.html">Task Creation & Assignment</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link text-white" href="progress-tracking.html">Progress Tracking</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link text-white" href="deadline-management.html">Deadline Management</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link text-white" href="calendar-integration.html">Calendar Integration</a>
+      </li>
+    </ul>
+  </div>
+
+  <div class="container-fluid p-5">
+    <h2>Deadline Management</h2>
+
+    <!-- Overdue Tasks -->
+    <div class="mb-4">
+      <h5>Overdue Tasks</h5>
+      <ul id="overdueTasks" class="list-group">
+        <!-- Overdue tasks will be displayed here -->
+      </ul>
+    </div>
+
+    <!-- Tasks Due Today -->
+    <div class="mb-4">
+      <h5>Tasks Due Today</h5>
+      <ul id="tasksToday" class="list-group">
+        <!-- Tasks due today will be displayed here -->
+      </ul>
+    </div>
+
+    <!-- Tasks Due This Week -->
+    <div class="mb-4">
+      <h5>Tasks Due This Week</h5>
+      <ul id="tasksThisWeek" class="list-group">
+        <!-- Tasks due this week will be displayed here -->
+      </ul>
+    </div>
+
+    <!-- Upcoming Tasks -->
+    <div class="mb-4">
+      <h5>Upcoming Tasks</h5>
+      <ul id="upcomingTasks" class="list-group">
+        <!-- Upcoming tasks will be displayed here -->
+      </ul>
+    </div>
+
+    <!-- Editable Deadlines -->
+    <h4>Edit Deadlines</h4>
+    <form id="editDeadlineForm" class="mb-4">
+      <div class="mb-3">
+        <label for="taskName" class="form-label">Task Name</label>
+        <input type="text" class="form-control" id="taskName" placeholder="Enter task name">
+      </div>
+      <div class="mb-3">
+        <label for="newDeadline" class="form-label">New Deadline</label>
+        <input type="date" class="form-control" id="newDeadline">
+      </div>
+      <button type="button" class="btn btn-success" onclick="editDeadline()">Edit Deadline</button>
+    </form>
+    
+    <!-- Success Message -->
+    <div id="successMessage" class="alert alert-success d-none" role="alert">
+      Deadline updated successfully!
+    </div>
+
+  </div>
+</div>
+
+<script>
+  const tasks = [
+    { name: "Design wireframe", deadline: "2024-09-10" },
+    { name: "Submit project report", deadline: "2024-09-15" },
+    { name: "Code task feature", deadline: "2024-09-25" },
+    { name: "Team meeting", deadline: "2024-09-05" }
+  ];
+
+  const overdueTasks = document.getElementById('overdueTasks');
+  const tasksToday = document.getElementById('tasksToday');
+  const tasksThisWeek = document.getElementById('tasksThisWeek');
+  const upcomingTasks = document.getElementById('upcomingTasks');
+
+  const today = new Date();
+
+  // Function to categorize tasks by deadlines
+  tasks.forEach(task => {
+    const taskDeadline = new Date(task.deadline);
+    const listItem = document.createElement('li');
+    listItem.classList.add('list-group-item');
+    listItem.textContent = `${task.name} (Deadline: ${task.deadline})`;
+
+    if (taskDeadline < today) {
+      // Overdue tasks
+      overdueTasks.appendChild(listItem);
+    } else if (taskDeadline.toDateString() === today.toDateString()) {
+      // Due today
+      tasksToday.appendChild(listItem);
+    } else if (taskDeadline > today && taskDeadline <= new Date(today.getFullYear(), today.getMonth(), today.getDate() + 7)) {
+      // Due this week
+      tasksThisWeek.appendChild(listItem);
+    } else {
+      // Upcoming tasks
+      upcomingTasks.appendChild(listItem);
+    }
+  });
+
+  // Function to edit the deadline of a task
+  function editDeadline() {
+    const taskName = document.getElementById('taskName').value;
+    const newDeadline = document.getElementById('newDeadline').value;
+    let taskFound = false;
+
+    tasks.forEach(task => {
+      if (task.name === taskName) {
+        task.deadline = newDeadline;
+        taskFound = true;
+      }
+    });
+
+    if (taskFound) {
+      document.getElementById('successMessage').classList.remove('d-none');
+    } else {
+      alert('Task not found');
+    }
+
+    // Refresh the page to update tasks
+    setTimeout(() => {
+      location.reload();
+    }, 1000);
+  }
+</script>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

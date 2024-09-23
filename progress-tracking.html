@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Progress Tracking</title>
+    <link href="styles.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        #sidebar {
+            min-width: 200px;
+            max-width: 250px;
+            background-color: #343a40;
+        }
+        #sidebar a {
+            color: #ffffff;
+        }
+        .list-group-item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            position: relative;
+        }
+        .list-group-item .task-content {
+            flex: 1;
+        }
+        .list-group-item .done-checkbox {
+            position: absolute;
+            right: 10px;
+        }
+        .done-task {
+            text-decoration: line-through;
+            color: #6c757d;
+        }
+        .tick-symbol {
+            font-size: 1.5rem;
+            color: green;
+            margin-left: 10px;
+        }
+    </style>
+</head>
+<body>
+
+<div class="d-flex">
+    <!-- Sidebar -->
+    <div id="sidebar" class="bg-dark text-white p-3">
+        <h3>Features</h3>
+        <ul class="nav flex-column">
+            <li class="nav-item">
+                <a class="nav-link text-white" href="index.html">Home</a>
+              </li>
+            <li class="nav-item">
+                <a class="nav-link text-white" href="create-task.html">Task Creation & Assignment</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link text-white" href="progress-tracking.html">Progress Tracking</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link text-white" href="deadline-management.html">Deadline Management</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link text-white" href="calendar-integration.html">Calendar Integration</a>
+            </li>
+        </ul>
+    </div>
+
+    <!-- Main Content -->
+    <div class="container-fluid p-5">
+        <!-- Tasks to Do -->
+        <div class="mb-4">
+            <h3>Tasks to Do</h3>
+            <ul class="list-group" id="taskList">
+                <!-- Existing tasks will be appended here -->
+            </ul>
+        </div>
+
+        <!-- Done Tasks -->
+        <div class="mb-4">
+            <h3>Done Tasks</h3>
+            <ul class="list-group" id="doneTaskList">
+                <!-- Done tasks will be appended here -->
+            </ul>
+        </div>
+
+        <!-- Progress Tracking -->
+        <div class="mb-4">
+            <h3>Progress Tracking</h3>
+            <div id="progressContainer">
+                <h4>Progress</h4>
+                <div id="progressList">
+                    <!-- Progress tracking will be appended here -->
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    let taskId = 0; // Unique task identifier
+    const taskList = document.getElementById('taskList');
+    const doneTaskList = document.getElementById('doneTaskList');
+    const progressList = document.getElementById('progressList');
+
+    function createTaskItem(task, isDone = false) {
+        const taskItem = document.createElement('li');
+        taskItem.classList.add('list-group-item');
+        taskItem.dataset.id = taskId++; // Set unique ID
+        taskItem.innerHTML = `
+            <div class="task-content ${isDone ? 'done-task' : ''}">
+                <strong>${task.name}</strong> - Deadline: ${task.deadline} - Assigned to: ${task.assignee}
+            </div>
+            <input type="checkbox" class="form-check-input done-checkbox" ${isDone ? 'checked' : ''}>
+            <span class="${isDone ? 'tick-symbol' : ''}">
+                ${isDone ? '✔' : ''}
+            </span>
+        `;
+        return taskItem;
+    }
+
+    function handleCheckboxChange(event) {
+        const checkbox = event.target;
+        const taskItem = checkbox.closest('.list-group-item');
+
+        if (checkbox.checked) {
+            // Move task to done list
+            doneTaskList.appendChild(taskItem);
+            taskItem.querySelector('.task-content').classList.add('done-task');
+            taskItem.querySelector('.tick-symbol').textContent = '✔';
+        } else {
+            // Move task back to tasks list
+            taskList.appendChild(taskItem);
+            taskItem.querySelector('.task-content').classList.remove('done-task');
+            taskItem.querySelector('.tick-symbol').textContent = '';
+        }
+        updateProgress();
+    }
+
+    // Add existing tasks to the list
+    const existingTasks = [
+        { name: "Task 1", deadline: "2024-09-20", assignee: "John" },
+        { name: "Task 2", deadline: "2024-09-22", assignee: "Alice" }
+    ];
+
+    existingTasks.forEach(task => {
+        const taskItem = createTaskItem(task);
+        taskItem.querySelector('input').addEventListener('change', handleCheckboxChange);
+        taskList.appendChild(taskItem);
+    });
+
+    // Create Progress Tracking View
+    function updateProgress() {
+        const tasksToDoCount = taskList.children.length;
+        const doneTasksCount = doneTaskList.children.length;
+        const totalTasks = tasksToDoCount + doneTasksCount;
+        const progressPercent = totalTasks > 0 ? (doneTasksCount / totalTasks) * 100 : 0;
+
+        progressList.innerHTML = `
+            <p>Tasks to Do: ${tasksToDoCount}</p>
+            <p>Done Tasks: ${doneTasksCount}</p>
+            <p>Total Tasks: ${totalTasks}</p>
+            <div class="progress">
+                <div class="progress-bar" role="progressbar" style="width: ${progressPercent}%" aria-valuenow="${progressPercent}" aria-valuemin="0" aria-valuemax="100">${Math.round(progressPercent)}%</div>
+            </div>
+        `;
+    }
+
+    // Initial progress update
+    updateProgress();
+
+    // Update progress when tasks are moved
+    document.querySelectorAll('.done-checkbox').forEach(checkbox => {
+        checkbox.addEventListener('change', updateProgress);
+    });
+</script>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

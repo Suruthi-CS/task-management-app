@@ -1,0 +1,89 @@
+/* Ensure the sidebar and content fill the viewport */
+#sidebar {
+    width: 250px;
+    height: 100vh;
+    background-color: #1a1a1a !important; /* Darker background for sidebar */
+    color: #ffffff !important; /* White text color in sidebar */
+    box-shadow: 2px 0 5px rgba(0, 0, 0, 0.2); /* Subtle shadow for depth */
+}
+
+.container-fluid {
+    flex-grow: 1;
+    background-color: #f8f9fa !important; /* Light background for content area */
+    padding: 2rem; /* Spacing around content */
+}
+
+/* Body background and text color */
+body {
+    background-color: #000000 !important; /* Black background */
+    color: #ffffff !important; /* White text color */
+    font-family: 'Arial' !important; /* Clean and simple font */
+}
+
+/* Sidebar links */
+#sidebar .nav-link {
+    color: #e0e0e0 !important; /* Lighter text color for sidebar links */
+    padding: 10px 15px; /* Add some padding for better spacing */
+    border-radius: 5px; /* Rounded corners for links */
+    font-weight: 500; /* Medium weight for better readability */
+}
+
+/* Sidebar links on hover */
+#sidebar .nav-link:hover {
+    color: #ffffff !important; /* White text color on hover */
+    background-color: #3b8bd6 !important; /* Accent color background on hover */
+}
+
+/* Sidebar background color for selected link */
+#sidebar .nav-link.active {
+    background-color: #d6542c !important; /* Active link background color */
+    color: #ffffff !important; /* Active link text color */
+}
+
+/* List group item */
+.list-group-item {
+    color: #000000 !important; /* Black text color for task boxes */
+    background-color: #ffffff !important; /* White background for task boxes */
+    border: 1px solid #e0e0e0 !important; /* Light border for separation */
+    border-radius: 5px; /* Rounded corners */
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Subtle shadow */
+    margin-bottom: 10px; /* Spacing between items */
+    padding: 10px; /* Padding inside each item */
+}
+
+/* Done task text color */
+.done-task {
+    color: #6c757d !important; /* Color for done tasks */
+    text-decoration: line-through; /* Strike-through for completed tasks */
+}
+
+/* Success message background color */
+#successMessage {
+    background-color: #d6542c !important; /* Success message color */
+    color: #ffffff !important; /* Success message text color */
+    border-radius: 5px; /* Rounded corners for success message */
+    padding: 15px; /* Padding inside success message */
+    margin-top: 20px; /* Space above success message */
+}
+
+/* Progress bar background color */
+.progress {
+    background-color: #e0e0e0 !important; /* Light background for progress bar track */
+    border-radius: 5px; /* Rounded corners for progress bar track */
+    margin-top: 2px; /* Space above progress bar */
+}
+
+.progress-bar {
+    background-color: #16b939 !important; /* Progress bar color */
+    border-radius: 5px; /* Rounded corners for progress bar */
+}
+
+/* Heading background color */
+h1, h2, h3, h4, h5, h6 {
+    background-color: #3b8bd6 !important; /* Background color for all headings */
+    color: #ffffff ; /* White text color for headings */
+    padding: 10px; /* Padding inside headings */
+    border-radius: 5px; /* Rounded corners for headings */
+    margin-bottom: 20px; /* Space below headings */
+}
+
