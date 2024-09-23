@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Group Chat</title>
+    <link href="styles.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body {
+            display: flex;
+            height: 100vh;
+            margin: 0;
+        }
+        #sidebar {
+            min-width: 200px;
+            max-width: 250px;
+            height: 100vh;
+            background-color: #343a40;
+            padding: 1rem;
+        }
+        #sidebar a {
+            color: #ffffff;
+        }
+        .chat-container {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            padding: 2rem;
+        }
+        .messages {
+            flex: 1;
+            overflow-y: auto;
+            border: 1px solid #ced4da;
+            margin-bottom: 1rem;
+            padding: 1rem;
+        }
+        .message {
+            margin: 0.5rem 0;
+        }
+        .message-input {
+            display: flex;
+            gap: 0.5rem;
+        }
+        .join-group {
+            margin-bottom: 1rem;
+        }
+        .group-list {
+            margin-top: 1rem;
+        }
+        .group-item {
+            cursor: pointer;
+            padding: 0.5rem;
+            border: 1px solid #ced4da;
+            margin-bottom: 0.5rem;
+            border-radius: 5px;
+        }
+        .group-item:hover {
+            background-color: #f8f9fa;
+        }
+    </style>
+</head>
+<body>
+
+<div id="sidebar" class="bg-dark text-white">
+    <h3>Task Manager</h3>
+    <ul class="nav flex-column">
+        <li class="nav-item">
+            <a class="nav-link text-white" href="index.html">Home</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link text-white" href="create-task.html">Task Creation & Assignment</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link text-white" href="progress-tracking.html">Progress Tracking</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link text-white" href="deadline-management.html">Deadline Management</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link text-white" href="calendar-integration.html">Calendar Integration</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link text-white" href="groupchat.html">Group</a>
+        </li>
+    </ul>
+</div>
+
+<div class="chat-container">
+    <h4>Join Group</h4>
+    <div class="join-group">
+        <input type="text" id="groupName" class="form-control" placeholder="Enter group name">
+        <button id="joinGroupButton" class="btn btn-primary mt-2">Join</button>
+    </div>
+
+    <div class="group-list" id="groupList"></div>
+
+    <h4>Messages</h4>
+    <div class="messages" id="messages"></div>
+    <div class="message-input">
+        <input type="text" id="messageInput" class="form-control" placeholder="Type your message" required>
+        <button id="sendButton" class="btn btn-primary">Send</button>
+    </div>
+</div>
+
+<button class="btn btn-primary square-btn" id="taskButton">
+    Chat
+</button>
+
+<script>
+    const sendButton = document.getElementById('sendButton');
+    const messageInput = document.getElementById('messageInput');
+    const messages = document.getElementById('messages');
+    const joinGroupButton = document.getElementById('joinGroupButton');
+    const groupNameInput = document.getElementById('groupName');
+    const groupList = document.getElementById('groupList');
+    
+    let currentGroup = '';
+
+    sendButton.addEventListener('click', () => {
+        const messageText = messageInput.value.trim();
+        if (messageText && currentGroup) {
+            const messageElement = document.createElement('div');
+            messageElement.classList.add('message');
+            messageElement.textContent = `[${currentGroup}] ${messageText}`;
+            messages.appendChild(messageElement);
+            messageInput.value = '';
+            messages.scrollTop = messages.scrollHeight;
+        }
+    });
+
+    joinGroupButton.addEventListener('click', () => {
+        const groupName = groupNameInput.value.trim();
+        if (groupName) {
+            const groupItem = document.createElement('div');
+            groupItem.classList.add('group-item');
+            groupItem.textContent = groupName;
+            groupItem.addEventListener('click', () => {
+                currentGroup = groupName;
+                messages.innerHTML = ''; // Clear previous messages
+                messages.scrollTop = messages.scrollHeight;
+            });
+            groupList.appendChild(groupItem);
+            groupNameInput.value = ''; // Clear input
+        }
+    });
+
+    const taskButton = document.getElementById('taskButton');
+    taskButton.addEventListener('click', () => {
+        window.location.href = 'create-task.html';
+    });
+</script>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
